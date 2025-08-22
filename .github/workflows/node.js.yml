@@ -161,4 +161,34 @@ jobs:
         push: true
         tags: ux007893/frontend:latest
         file: ./client/Dockerfile
+  
+  trivy-image-scan:
+    runs-on: RunnerAgent-1
+    needs: build-frontkend-image-and-push
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run Trivy vulnerability scanner for backend
+      uses: aquasecurity/trivy-action@0.28.0
+      with:
+        scan-type: image
+        image-ref: ux007893/backend:latest
+        format: table
+        exit-code: '0'                 
+        ignore-unfixed: true
+        vuln-type: os,library
+        severity: CRITICAL,HIGH
+          
+    - name: Run Trivy image scan for frontend
+      uses: aquasecurity/trivy-action@0.28.0
+      with:
+        scan-type: image               # 👈 scan container image
+        image-ref: ux007893/frontend:latest
+        format: table
+        exit-code: '0'              
+        ignore-unfixed: true
+        vuln-type: os,library
+        severity: CRITICAL,HIGH
 
