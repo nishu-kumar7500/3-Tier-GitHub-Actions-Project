@@ -11,7 +11,7 @@ on:
 
 jobs:
   comiple:
-    runs-on: Agent-1
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout Code
