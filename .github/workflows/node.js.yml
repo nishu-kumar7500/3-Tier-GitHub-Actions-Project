@@ -11,7 +11,7 @@ on:
 
 jobs:
   compile:
-    runs-on: Agent-1
+    runs-on: RunnerAgent-1
 
     steps:
     - name: Checkout Code
@@ -33,7 +33,7 @@ jobs:
        find . -name "*.js" -exec node --check {} +
 
   gitleaks-scan:
-    runs-on: Agent-1
+    runs-on: RunnerAgent-1
     needs: compile
 
     steps:
@@ -49,7 +49,7 @@ jobs:
        gitleaks detect --source ./api --exit-code 1
 
   trivy_fs_scan:
-    runs-on: Agent-1
+    runs-on: RunnerAgent-1
     needs: gitleaks-scan
 
     steps:
@@ -67,7 +67,7 @@ jobs:
         vuln-type: 'os,library'
 
   sonar-frontend:
-    runs-on: Agent-1
+    runs-on: RunnerAgent-1
     needs: trivy_fs_scan
 
     steps:
@@ -88,7 +88,7 @@ jobs:
         SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
   sonar-backtend:
-    runs-on: Agent-1
+    runs-on: RunnerAgent-1
     needs: sonar-frontend
 
     steps:
