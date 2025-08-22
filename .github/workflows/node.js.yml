@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  comiple:
+  compile:
     runs-on: Agent-1
 
     steps:
@@ -34,6 +34,7 @@ jobs:
 
   gitleaks-scan:
     runs-on: Agent-1
+    needs: compile
 
     steps:
     - name: CheckOut Code
@@ -41,7 +42,7 @@ jobs:
 
     - name: Gitleaks Setup
       uses: gitleaks/gitleaks-action@v2
-      
+
     - name: GitLeaks Scan
       run: |
        gitleaks detect --source ./client --exit-code 1
